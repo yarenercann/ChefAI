@@ -133,16 +133,3 @@ if __name__ == "__main__":
         json.dump(tumTarifler, f, ensure_ascii=False, indent=2)
         
     print(f"\n Toplam tarif sayısı: {len(tumTarifler)} adet. 'dataset.json' dosyasına kaydedildi.")
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-    
-   
-=======
-   #deneme
->>>>>>> 86a583f17859763463ed611e4e62b43b4655967c
-=======
-   #yaren
->>>>>>> 
-
-#son test
