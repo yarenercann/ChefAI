@@ -134,9 +134,13 @@ if __name__ == "__main__":
         
     print(f"\n Toplam tarif sayısı: {len(tumTarifler)} adet. 'dataset.json' dosyasına kaydedildi.")
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     
    
 =======
    #deneme
 >>>>>>> 86a583f17859763463ed611e4e62b43b4655967c
+=======
+   #yaren
+>>>>>>> 5559dd975c278a678022fa0f05e498ead58c9498
