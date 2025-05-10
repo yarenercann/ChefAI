@@ -75,10 +75,14 @@ def veriCekme(url):
                     icindekiler.append(htmlOgesi.text.strip().strip('"'))
         
         temizlenmisMalzeme=[temizlenmisMalzemeCumlesi(item) for item in icindekiler if item.strip()]
+        #Hazırlanış
+        hazirlanis_paragraflar = soup.select("div.entry-content > p")
+        hazirlanis = "\n".join(p.get_text(strip=True) for p in hazirlanis_paragraflar if p.get_text(strip=True)) 
          
         tarifDetaylari.append({
             "Başlık": baslik,
-            "İçindekiler":temizlenmisMalzeme
+            "İçindekiler":temizlenmisMalzeme,
+            "Hazirlanis": hazirlanis
         })   
     
     except Exception as e:
@@ -90,22 +94,26 @@ def kategoriDetaylari(kategoriURL,sayfaSayisi=1):
     
     tarifDetaylari=[]
     for sayfa in range(1,sayfaSayisi+1):
-        url=f"{kategoriURL.rstrip('/')}/page/{sayfa}"
-        response=requests.get(url) #sayfa içeriği çekilir
-        soup=BeautifulSoup(response.text,"html.parser")
+
+        try:
+            url=f"{kategoriURL.rstrip('/')}/page/{sayfa}"
+            response=requests.get(url, timeout=10) #sayfa içeriği çekilir -10 saniyeden uzun süren isteklerde takılmaması için
+            soup=BeautifulSoup(response.text,"html.parser")
         
-        tarifLink=[]
-        for tarif in soup.find_all("article",{"class":"post"}): #<article> içerisindeki bağlantılar bulunur
-            link=tarif.find("a")["href"]
-            if link not in tarifLink:
-                tarifLink.append(link)
+            tarifLink=[]
+            for tarif in soup.find_all("article",{"class":"post"}): #<article> içerisindeki bağlantılar bulunur
+                link=tarif.find("a")["href"]
+                if link not in tarifLink:
+                    tarifLink.append(link)
                 
-        for link in tarifLink: #her link için veriCekme() fonksiyonu çağrılır
-            tarifler=veriCekme(link) 
-            tarifDetaylari.extend(tarifler)
+            for link in tarifLink: #her link için veriCekme() fonksiyonu çağrılır
+                tarifler=veriCekme(link) 
+                tarifDetaylari.extend(tarifler)
+        except requests.exceptions.RequestException as e:
+            print(f"HATA: {sayfa_url} alınamadı -> {e}")
+            continue
     
     return tarifDetaylari
-
 
 if __name__ == "__main__":
     kategoriler={
@@ -129,7 +137,12 @@ if __name__ == "__main__":
         print(f"\nKategori: {isim} işleniyor ({sayfaSayisi} sayfa)...")
         tumTarifler.extend(kategoriDetaylari(url,sayfaSayisi=sayfaSayisi))
         
+    #with open("dataset.json", "w", encoding="utf-8") as f:
+    #    json.dump(tumTarifler, f, ensure_ascii=False, indent=2)
+    
     with open("dataset.json", "w", encoding="utf-8") as f:
         json.dump(tumTarifler, f, ensure_ascii=False, indent=2)
-        
-    print(f"\n Toplam tarif sayısı: {len(tumTarifler)} adet. 'dataset.json' dosyasına kaydedildi.")
+    
+    #print(f"\n Toplam tarif sayısı: {len(tumTarifler)} adet. 'dataset.json' dosyasına kaydedildi.")
+    print(f"\n Toplam tarif sayısı: {len(tumTarifler)} adet. 'tarifler.json' dosyasına kaydedildi.")
+    
