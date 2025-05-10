@@ -9,7 +9,7 @@ with open("dataset.json", "r", encoding="utf-8") as f:
 # 2. Başlık ve malzeme metinleri ve hazırlama metinleri hazırla
 basliklar = [tarif["Başlık"] for tarif in tarifler]
 malzeme_metinleri = [" ".join(tarif["İçindekiler"]) for tarif in tarifler]
-hazırlama_metinleri = [tarif["Hazırlama"] for tarif in tarifler]
+hazırlama_metinleri = [tarif["Hazirlanis"] for tarif in tarifler]
 
 
 # 3. Vektörleştirme
@@ -40,8 +40,8 @@ en_benzer_indisler = benzerlik[0].argsort()[::-1][:5]
 print("\n📌 Girdiğiniz malzemelere en uygun 5 tarif:\n")
 secenekler = [] # sunulan secenekleri bir listeeye ekleme
 for i, k in enumerate(en_benzer_indisler, start=1):
-    print(f"{k}. {basliklar[i]} (Benzerlik Skoru: {benzerlik[0][i]:.2f})")
-    secenekler.append(basliklar[i])
+    print(f"{i}. {basliklar[k]} (Benzerlik Skoru: {benzerlik[0][k]:.2f})")
+    secenekler.append(basliklar[k])
 
 #kullanıcıdan secim alma
 secim = input("\nBir tarif seçin (1-5): \n")
@@ -50,8 +50,11 @@ if secim.isdigit() and 1 <= int(secim) <= 5:
     detayli_tarif = tarif_bul(secilen_tarif)
     if detayli_tarif:
         print(f"\nSecilen tarif: {detayli_tarif['Başlık']}")
-        print(f"Malzemeler: {detayli_tarif['İçindekiler']}")
-        print(f"Hazırlama: {detayli_tarif['Hazırlama']}")
+        print("\nMalzemeler: ")
+        for malzeme in detayli_tarif["İçindekiler"]:
+            print(f"- {malzeme}")
+        print("\nHazırlama: ")
+        print(detayli_tarif["Hazirlanis"])
     else:
         print("Tarif bulunamadı.")
 else:
