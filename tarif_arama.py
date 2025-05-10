@@ -54,7 +54,9 @@ if secim.isdigit() and 1 <= int(secim) <= 5:
         for malzeme in detayli_tarif["İçindekiler"]:
             print(f"- {malzeme}")
         print("\nHazırlama: ")
-        print(detayli_tarif["Hazirlanis"])
+        for hazirlama in detayli_tarif["Hazirlanis"]:
+            print(f"- {hazirlama}")
+        #print(detayli_tarif["Hazirlanis"])
     else:
         print("Tarif bulunamadı.")
 else:
