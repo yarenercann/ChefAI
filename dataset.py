@@ -63,6 +63,13 @@ def veriCekme(url):
         
         malzeme_div=soup.find("div",{"class":"mlz"})
         icindekiler= []
+        #Hazırlanış
+        #hazirlanis_paragraflar = soup.select("div.entry-content > p")
+        #hazirlanis = "\n".join(p.get_text(strip=True) for p in hazirlanis_paragraflar if p.get_text(strip=True)) 
+
+        #div.entry content içinden <p> leri seçer ve boş olmayan paragrafları liste olarak alır
+        hazirlanis_paragraflar = soup.select("div.entry-content > p")
+        hazirlanis = [p.get_text(strip=True) for p in hazirlanis_paragraflar if p.get_text(strip=True)]
         
         if malzeme_div: # Yemek tarifi malzemeleri kısmı doluysa aşağıdaki işlemler yapılır
             for htmlOgesi in malzeme_div.children: #children html ögesinin altındaki etiketlere(span,br gibi etiketlere) erişimi sağlar
@@ -75,10 +82,8 @@ def veriCekme(url):
                     icindekiler.append(htmlOgesi.text.strip().strip('"'))
         
         temizlenmisMalzeme=[temizlenmisMalzemeCumlesi(item) for item in icindekiler if item.strip()]
-        #Hazırlanış
-        hazirlanis_paragraflar = soup.select("div.entry-content > p")
-        hazirlanis = "\n".join(p.get_text(strip=True) for p in hazirlanis_paragraflar if p.get_text(strip=True)) 
-         
+        
+        
         tarifDetaylari.append({
             "Başlık": baslik,
             "İçindekiler":temizlenmisMalzeme,
@@ -144,5 +149,4 @@ if __name__ == "__main__":
         json.dump(tumTarifler, f, ensure_ascii=False, indent=2)
     
     #print(f"\n Toplam tarif sayısı: {len(tumTarifler)} adet. 'dataset.json' dosyasına kaydedildi.")
-    print(f"\n Toplam tarif sayısı: {len(tumTarifler)} adet. 'tarifler.json' dosyasına kaydedildi.")
-    
+    print(f"\n Toplam tarif sayısı: {len(tumTarifler)} adet. 'dataset.json' dosyasına kaydedildi.")
