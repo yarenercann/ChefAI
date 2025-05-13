@@ -142,10 +142,10 @@ if __name__ == "__main__":
     #with open("dataset.json", "w", encoding="utf-8") as f:
     #   json.dump(tumTarifler, f, ensure_ascii=False, indent=2)
     
-    with open("tarifler.json", "w", encoding="utf-8") as f:
+    with open("dataset.json", "w", encoding="utf-8") as f:
         json.dump(tumTarifler, f, ensure_ascii=False, indent=2)
         
     #print(f"\n Toplam tarif sayısı: {len(tumTarifler)} adet. 'dataset.json' dosyasına kaydedildi.")
-    print(f"\n Toplam tarif sayısı: {len(tumTarifler)} adet. 'tarifler.json' dosyasına kaydedildi.")
+    print(f"\n Toplam tarif sayısı: {len(tumTarifler)} adet. 'dataset.json' dosyasına kaydedildi.")
     
             
