@@ -70,6 +70,8 @@ def veriCekme(url):
         #div.entry content içinden <p> leri seçer ve boş olmayan paragrafları liste olarak alır
         hazirlanis_paragraflar = soup.select("div.entry-content > p")
         hazirlanis = [p.get_text(strip=True) for p in hazirlanis_paragraflar if p.get_text(strip=True)]
+
+        gorsel = soup.find("div", class_="entry-content" ).find("img")["src"] if soup.find("div", class_="entry-content") else None
         
         if malzeme_div: # Yemek tarifi malzemeleri kısmı doluysa aşağıdaki işlemler yapılır
             for htmlOgesi in malzeme_div.children: #children html ögesinin altındaki etiketlere(span,br gibi etiketlere) erişimi sağlar
@@ -87,7 +89,8 @@ def veriCekme(url):
         tarifDetaylari.append({
             "Başlık": baslik,
             "İçindekiler":temizlenmisMalzeme,
-            "Hazirlanis": hazirlanis
+            "Hazirlanis": hazirlanis,
+            "Gorsel": gorsel
         })   
     
     except Exception as e:
