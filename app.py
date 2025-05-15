@@ -51,8 +51,5 @@ def index():
 
     return render_template("index.html", onerilen_tarifler=oneriler)
 
-if __name__ == "_main_":
-    app.run(debug=True)
-
 if __name__ == "__main__":
     app.run(debug=True)
